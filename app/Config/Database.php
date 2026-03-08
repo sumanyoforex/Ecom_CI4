@@ -17,7 +17,7 @@ class Database extends Config
         // Database file lives at writable/database.sqlite
         'database' => WRITEPATH . 'database.sqlite',
         'DBPrefix' => '',
-        'DBDebug'  => true,
+        'DBDebug'  => ENVIRONMENT !== 'production',
         'charset'  => 'utf8',
         'DBCollat' => 'utf8_general_ci',
     ];
@@ -27,3 +27,4 @@ class Database extends Config
         'database' => WRITEPATH . 'database_test.sqlite',
     ];
 }
+

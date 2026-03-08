@@ -6,20 +6,29 @@ use App\Models\CartModel;
 use App\Models\ProductModel;
 
 /**
- * CartController — add, view, update, and remove cart items.
- *
- * Cart key = session_id for guests, user_id for logged-in users.
+ * Handles customer cart operations with stock validation.
  */
 class CartController extends BaseController
 {
     private function getCartKey(): array
     {
-        $sessionId = session_id();
-        $userId    = session()->get('user_id') ?? 0;
-        return [$sessionId, (int)$userId];
+        return [session_id(), (int)(session()->get('user_id') ?? 0)];
     }
 
-    /** GET /cart — show cart page */
+    private function getOwnedCartItem(int $cartId): ?array
+    {
+        [$sid, $uid] = $this->getCartKey();
+        $builder = (new CartModel())->where('id', $cartId);
+
+        if ($uid > 0) {
+            $builder->where('user_id', $uid);
+        } else {
+            $builder->where('session_id', $sid)->where('user_id', null);
+        }
+
+        return $builder->first();
+    }
+
     public function index()
     {
         [$sid, $uid] = $this->getCartKey();
@@ -29,51 +38,78 @@ class CartController extends BaseController
         return view('shop/cart', ['items' => $items, 'total' => $total]);
     }
 
-    /** POST /cart/add — add a product to cart */
     public function add()
     {
         $productId = (int)$this->request->getPost('product_id');
-        $qty       = max(1, (int)$this->request->getPost('qty'));
+        $qty = max(1, (int)$this->request->getPost('qty'));
+
+        $product = (new ProductModel())->find($productId);
+        if (!$product || $product['status'] !== 'active') {
+            return redirect()->back()->with('error', 'This product is unavailable.');
+        }
+
+        if ($qty > (int)$product['stock']) {
+            return redirect()->back()->with('error', 'Requested quantity is not available in stock.');
+        }
 
         [$sid, $uid] = $this->getCartKey();
-        $cartModel   = new CartModel();
+        $cartModel = new CartModel();
 
-        // Check if this product is already in the cart
         $existing = $cartModel
             ->where('product_id', $productId)
             ->where($uid > 0 ? 'user_id' : 'session_id', $uid > 0 ? $uid : $sid)
             ->first();
 
         if ($existing) {
-            // Increase quantity
-            $cartModel->update($existing['id'], ['qty' => $existing['qty'] + $qty]);
+            $newQty = (int)$existing['qty'] + $qty;
+            if ($newQty > (int)$product['stock']) {
+                return redirect()->back()->with('error', 'Not enough stock for the requested quantity.');
+            }
+
+            $cartModel->update((int)$existing['id'], ['qty' => $newQty]);
         } else {
-            // Add new row
             $cartModel->insert([
                 'session_id' => $sid,
-                'user_id'    => $uid > 0 ? $uid : null,
+                'user_id' => $uid > 0 ? $uid : null,
                 'product_id' => $productId,
-                'qty'        => $qty,
+                'qty' => $qty,
             ]);
         }
 
         return redirect()->to('/cart')->with('success', 'Item added to cart.');
     }
 
-    /** POST /cart/update — change qty of a cart item */
     public function update()
     {
-        $id  = (int)$this->request->getPost('cart_id');
+        $cartId = (int)$this->request->getPost('cart_id');
         $qty = max(1, (int)$this->request->getPost('qty'));
-        (new CartModel())->update($id, ['qty' => $qty]);
-        return redirect()->to('/cart');
+
+        $item = $this->getOwnedCartItem($cartId);
+        if (!$item) {
+            return redirect()->to('/cart')->with('error', 'Cart item not found.');
+        }
+
+        $product = (new ProductModel())->find((int)$item['product_id']);
+        if (!$product || $qty > (int)$product['stock']) {
+            return redirect()->to('/cart')->with('error', 'Not enough stock for the requested quantity.');
+        }
+
+        (new CartModel())->update($cartId, ['qty' => $qty]);
+
+        return redirect()->to('/cart')->with('success', 'Cart updated.');
     }
 
-    /** POST /cart/remove — remove an item from cart */
     public function remove()
     {
-        $id = (int)$this->request->getPost('cart_id');
-        (new CartModel())->delete($id);
+        $cartId = (int)$this->request->getPost('cart_id');
+        $item = $this->getOwnedCartItem($cartId);
+
+        if (!$item) {
+            return redirect()->to('/cart')->with('error', 'Cart item not found.');
+        }
+
+        (new CartModel())->delete($cartId);
+
         return redirect()->to('/cart')->with('success', 'Item removed.');
     }
 }

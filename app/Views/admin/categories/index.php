@@ -15,7 +15,7 @@
         <?php else: ?>
         <?php foreach ($categories as $cat): ?>
         <tr>
-            <td><img src="<?= esc($cat['image_url']) ?>" width="60" class="rounded"></td>
+            <td><img loading="lazy" decoding="async" src="<?= esc($cat['image_url']) ?>" width="60" class="rounded"></td>
             <td><?= esc($cat['name']) ?></td>
             <td><code><?= esc($cat['slug']) ?></code></td>
             <td>
@@ -31,3 +31,4 @@
 </div>
 
 <?= $this->endSection() ?>
+

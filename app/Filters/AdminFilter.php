@@ -18,13 +18,13 @@ class AdminFilter implements FilterInterface
     {
         // Check the admin session flag
         if (session()->get('is_admin') !== true) {
-            return redirect()->to('/admin/login')
-                             ->with('error', 'Admin access required.');
+            return redirect()->to('/login')
+                ->with('error', 'Please login as admin to access the admin panel.');
         }
     }
 
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
     {
-        // Nothing needed after the response
+    // Nothing needed after the response
     }
 }

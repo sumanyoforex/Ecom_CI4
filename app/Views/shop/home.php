@@ -15,7 +15,7 @@
     <div class="col">
         <a href="<?= base_url('shop?category=' . $cat['id']) ?>" class="text-decoration-none">
             <div class="card product-card">
-                <img src="<?= esc($cat['image_url']) ?>" class="card-img-top" alt="<?= esc($cat['name']) ?>">
+                <img loading="lazy" decoding="async" src="<?= esc($cat['image_url']) ?>" class="card-img-top" alt="<?= esc($cat['name']) ?>">
                 <div class="card-body text-center">
                     <h6 class="card-title mb-0 fw-semibold"><?= esc($cat['name']) ?></h6>
                 </div>
@@ -34,7 +34,7 @@
             <?php if ($p['sale_price']): ?>
                 <span class="badge bg-danger badge-sale">SALE</span>
             <?php endif; ?>
-            <img src="<?= esc($p['image_url']) ?>" class="card-img-top" alt="<?= esc($p['name']) ?>">
+            <img loading="lazy" decoding="async" src="<?= esc($p['image_url']) ?>" class="card-img-top" alt="<?= esc($p['name']) ?>">
             <div class="card-body d-flex flex-column">
                 <h6 class="card-title"><?= esc($p['name']) ?></h6>
                 <div class="mt-auto">
@@ -53,3 +53,4 @@
 </div>
 
 <?= $this->endSection() ?>
+

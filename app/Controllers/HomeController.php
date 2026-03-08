@@ -2,23 +2,37 @@
 
 namespace App\Controllers;
 
-use App\Models\ProductModel;
 use App\Models\CategoryModel;
+use App\Models\ProductModel;
 
 /**
- * HomeController — renders the homepage.
- * Shows featured products and all categories.
+ * HomeController renders the public landing page.
  */
 class HomeController extends BaseController
 {
     public function index()
     {
-        $productModel  = new ProductModel();
-        $categoryModel = new CategoryModel();
+        $cache = cache();
+        $cacheKey = 'landing_v2';
+        $cached = $cache->get($cacheKey);
 
-        return view('shop/home', [
-            'featured'   => $productModel->getFeatured(8),
-            'categories' => $categoryModel->allCategories(),
+        if (!$cached) {
+            $productModel = new ProductModel();
+            $categoryModel = new CategoryModel();
+
+            $cached = [
+                'featured' => $productModel->getFeatured(8),
+                'categories' => $categoryModel->allCategories(),
+            ];
+
+            $cache->save($cacheKey, $cached, 300);
+        }
+
+        return view('landing', [
+            'featured' => $cached['featured'],
+            'categories' => $cached['categories'],
+            'title' => 'ShopCI4 | Smart Shopping',
         ]);
     }
 }
+

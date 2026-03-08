@@ -5,33 +5,37 @@ namespace App\Controllers\Admin;
 use App\Controllers\BaseController;
 
 /**
- * Admin\AuthController — admin login/logout.
- *
- * IMPORTANT: checks .env credentials ONLY (no database).
- * This is intentional — admin is not stored in the DB.
+ * Admin auth via environment credentials.
  */
 class AuthController extends BaseController
 {
     public function loginForm()
     {
-        // If already admin, go to dashboard
         if (session()->get('is_admin')) {
             return redirect()->to('/admin');
         }
+
         return view('admin/login');
     }
 
     public function login()
     {
-        $email    = $this->request->getPost('email');
-        $password = $this->request->getPost('password');
+        $email = strtolower(trim((string)$this->request->getPost('email')));
+        $password = (string)$this->request->getPost('password');
 
-        // Compare against .env — admin is never in the database
-        if ($email === $_ENV['ADMIN_EMAIL'] && $password === $_ENV['ADMIN_PASSWORD']) {
+        $throttler = service('throttler');
+        $attemptKey = 'admin_login_' . sha1($this->request->getIPAddress() . '|' . $email);
+        if (!$throttler->check($attemptKey, 5, 600)) {
+            return redirect()->back()->with('error', 'Too many attempts. Please wait 10 minutes.');
+        }
+
+        if ($email === strtolower((string)env('ADMIN_EMAIL')) && $password === (string)env('ADMIN_PASSWORD')) {
+            session()->regenerate(true);
             session()->set([
-                'is_admin'   => true,
+                'is_admin' => true,
                 'admin_name' => 'Administrator',
             ]);
+
             return redirect()->to('/admin')->with('success', 'Welcome, Admin!');
         }
 
@@ -41,6 +45,7 @@ class AuthController extends BaseController
     public function logout()
     {
         session()->remove(['is_admin', 'admin_name']);
-        return redirect()->to('/admin/login')->with('success', 'Logged out.');
+        return redirect()->to('/')->with('success', 'Logged out of admin panel.');
     }
 }
+

@@ -1,0 +1,37 @@
+name: ci
+
+on:
+  push:
+    branches: ["main", "master", "codex/**"]
+  pull_request:
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer:v2
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Prepare writable paths
+        run: |
+          mkdir -p writable/session writable/logs writable/cache writable/debugbar writable/uploads
+          touch writable/database.sqlite
+
+      - name: Run migrations
+        run: php spark migrate
+
+      - name: Lint PHP files
+        run: find app -name "*.php" -print0 | xargs -0 -n1 php -l
+
+      - name: Validate routes
+        run: php spark routes
