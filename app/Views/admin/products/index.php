@@ -17,7 +17,7 @@
         <?php else: ?>
         <?php foreach ($products as $p): ?>
         <tr>
-            <td><img src="<?= esc($p['image_url']) ?>" width="60" class="rounded"></td>
+            <td><img loading="lazy" decoding="async" src="<?= esc($p['image_url']) ?>" width="60" class="rounded"></td>
             <td><?= esc($p['name']) ?></td>
             <td>$<?= number_format($p['price'],2) ?></td>
             <td><?= $p['sale_price'] ? '$'.number_format($p['sale_price'],2) : '—' ?></td>
@@ -36,3 +36,4 @@
 </div>
 
 <?= $this->endSection() ?>
+

@@ -5,8 +5,7 @@ namespace App\Database\Seeds;
 use CodeIgniter\Database\Seeder;
 
 /**
- * DatabaseSeeder — seeds all tables in order.
- * Run with: php spark db:seed DatabaseSeeder
+ * DatabaseSeeder seeds all core tables in safe order.
  */
 class DatabaseSeeder extends Seeder
 {
@@ -14,5 +13,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call('CategorySeeder');
         $this->call('ProductSeeder');
+        $this->call('CouponSeeder');
     }
 }

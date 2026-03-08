@@ -3,7 +3,7 @@
 
 <div class="row">
     <div class="col-md-7">
-        <img src="<?= esc($product['image_url']) ?>" class="img-fluid rounded shadow-sm" alt="<?= esc($product['name']) ?>">
+        <img loading="lazy" decoding="async" src="<?= esc($product['image_url']) ?>" class="img-fluid rounded shadow-sm" alt="<?= esc($product['name']) ?>">
     </div>
     <div class="col-md-5">
         <h2><?= esc($product['name']) ?></h2>
@@ -40,3 +40,4 @@
 </div>
 
 <?= $this->endSection() ?>
+
