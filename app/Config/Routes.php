@@ -33,6 +33,7 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
     $routes->get('account', 'UserController::account');
     $routes->get('order/(:num)', 'UserController::orderDetail/$1');
     $routes->post('order/cancel/(:num)', 'UserController::cancelOrder/$1');
+    $routes->post('order/rate/(:num)', 'UserController::rateOrderItem/$1');
 
     $routes->post('payment/mock-success/(:num)', 'PaymentController::mockSuccess/$1');
 
@@ -72,3 +73,4 @@ $routes->group('admin', ['filter' => 'admin'], function ($routes) {
     $routes->get('users/edit/(:num)', 'Admin\\UserController::edit/$1');
     $routes->post('users/update/(:num)', 'Admin\\UserController::update/$1');
 });
+

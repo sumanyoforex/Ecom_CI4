@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\CategoryModel;
 use App\Models\ProductModel;
+use App\Models\ProductRatingModel;
 
 /**
  * Product listing and product detail pages.
@@ -76,6 +77,14 @@ class ShopController extends BaseController
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Product not found: ' . $slug);
         }
 
-        return view('shop/detail', ['product' => $product]);
+        $ratings = new ProductRatingModel();
+        $ratingStats = $ratings->getProductRatingStats((int)$product['id']);
+        $reviews = $ratings->getRecentReviewsForProduct((int)$product['id']);
+
+        return view('shop/detail', [
+            'product' => $product,
+            'ratingStats' => $ratingStats,
+            'reviews' => $reviews,
+        ]);
     }
 }

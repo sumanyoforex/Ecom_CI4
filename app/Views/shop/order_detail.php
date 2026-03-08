@@ -1,6 +1,20 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
 
+<?php
+$ratingsByProduct = $ratingsByProduct ?? [];
+$isDelivered = strtolower((string)($order['status'] ?? '')) === 'delivered';
+?>
+
+<style>
+    .rating-stars i { color: #f7b500; }
+    .rating-stars .dim { color: #9fb2bc; }
+    .rating-form select,
+    .rating-form textarea {
+        font-size: 0.85rem;
+    }
+</style>
+
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2>Order Detail</h2>
     <a href="<?= base_url('account') ?>" class="btn btn-outline-secondary">Back to My Orders</a>
@@ -66,20 +80,57 @@
             <div class="table-responsive">
                 <table class="table align-middle mb-0">
                     <thead>
-                    <tr><th>Product</th><th class="text-center">Qty</th><th class="text-end">Price</th><th class="text-end">Subtotal</th></tr>
+                    <tr><th>Product</th><th class="text-center">Qty</th><th class="text-end">Price</th><th class="text-end">Subtotal</th><th>Your Rating</th></tr>
                     </thead>
                     <tbody>
                     <?php foreach ($order['items'] as $item): ?>
+                        <?php $existingRating = $ratingsByProduct[(int)$item['product_id']] ?? null; ?>
                         <tr>
                             <td>
                                 <div class="d-flex align-items-center gap-2">
                                     <img loading="lazy" decoding="async" src="<?= esc($item['image_url']) ?>" width="52" class="rounded" alt="<?= esc($item['name']) ?>">
-                                    <span><?= esc($item['name']) ?></span>
+                                    <div>
+                                        <span><?= esc($item['name']) ?></span>
+                                        <?php if (!empty($item['slug'])): ?>
+                                            <div><a class="small" href="<?= base_url('shop/' . $item['slug']) ?>">View product</a></div>
+                                        <?php endif; ?>
+                                    </div>
                                 </div>
                             </td>
                             <td class="text-center"><?= (int)$item['qty'] ?></td>
                             <td class="text-end">$<?= number_format((float)$item['price'], 2) ?></td>
                             <td class="text-end">$<?= number_format((float)$item['price'] * (int)$item['qty'], 2) ?></td>
+                            <td style="min-width:260px;">
+                                <?php if ($isDelivered): ?>
+                                    <?php if ($existingRating): ?>
+                                        <div class="rating-stars small mb-1">
+                                            <?php for ($s = 1; $s <= 5; $s++): ?>
+                                                <i class="fa-solid fa-star <?= $s <= (int)$existingRating['rating'] ? '' : 'dim' ?>"></i>
+                                            <?php endfor; ?>
+                                            <span class="ms-1 fw-semibold"><?= (int)$existingRating['rating'] ?>/5</span>
+                                        </div>
+                                    <?php else: ?>
+                                        <div class="small text-muted mb-1">Not rated yet</div>
+                                    <?php endif; ?>
+
+                                    <form method="post" action="<?= base_url('order/rate/' . $order['id']) ?>" class="rating-form">
+                                        <?= csrf_field() ?>
+                                        <input type="hidden" name="product_id" value="<?= (int)$item['product_id'] ?>">
+                                        <div class="d-flex gap-2 mb-1">
+                                            <select name="rating" class="form-select form-select-sm" required>
+                                                <option value="">Rate</option>
+                                                <?php for ($r = 1; $r <= 5; $r++): ?>
+                                                    <option value="<?= $r ?>" <?= $existingRating && (int)$existingRating['rating'] === $r ? 'selected' : '' ?>><?= $r ?> star<?= $r > 1 ? 's' : '' ?></option>
+                                                <?php endfor; ?>
+                                            </select>
+                                            <button class="btn btn-sm btn-brand" type="submit"><?= $existingRating ? 'Update' : 'Submit' ?></button>
+                                        </div>
+                                        <textarea name="review" class="form-control form-control-sm" rows="2" placeholder="Optional review"><?= esc((string)($existingRating['review'] ?? '')) ?></textarea>
+                                    </form>
+                                <?php else: ?>
+                                    <span class="small text-muted">Available after delivery</span>
+                                <?php endif; ?>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>
@@ -90,4 +141,3 @@
 </div>
 
 <?= $this->endSection() ?>
-
