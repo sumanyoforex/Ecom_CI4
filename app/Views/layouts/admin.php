@@ -5,15 +5,7 @@
     <title><?= $title ?? 'Admin Panel' ?> | ShopCI4</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-    <style>
-        body { background: #f1f3f5; }
-        .sidebar { min-height: 100vh; background: #1a1d23; padding-top: 1rem; }
-        .sidebar .nav-link { color: #adb5bd; padding: .6rem 1.2rem; border-radius: .4rem; margin: 2px 8px; }
-        .sidebar .nav-link:hover, .sidebar .nav-link.active { background: #0d6efd; color: #fff; }
-        .sidebar .brand { color: #fff; font-size: 1.3rem; font-weight: 700; padding: 1rem 1.2rem 1.5rem; }
-        .main-content { padding: 2rem; }
-        .stat-card { border: none; border-radius: 1rem; box-shadow: 0 2px 10px rgba(0,0,0,.07); }
-    </style>
+    <link rel="stylesheet" href="<?= base_url('assets/css/admin.css') ?>">
 </head>
 <body>
 <div class="container-fluid">
@@ -51,3 +43,4 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+

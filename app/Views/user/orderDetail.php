@@ -1,19 +1,13 @@
 <?= $this->extend('layouts/main') ?>
+<?= $this->section('pageStyles') ?>
+<link rel="stylesheet" href="<?= base_url('assets/css/order-detail.css') ?>">
+<?= $this->endSection() ?>
 <?= $this->section('content') ?>
 
 <?php
 $ratingsByProduct = $ratingsByProduct ?? [];
 $isDelivered = strtolower((string)($order['status'] ?? '')) === 'delivered';
 ?>
-
-<style>
-    .rating-stars i { color: #f7b500; }
-    .rating-stars .dim { color: #9fb2bc; }
-    .rating-form select,
-    .rating-form textarea {
-        font-size: 0.85rem;
-    }
-</style>
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2>Order Detail</h2>
@@ -100,7 +94,7 @@ $isDelivered = strtolower((string)($order['status'] ?? '')) === 'delivered';
                             <td class="text-center"><?= (int)$item['qty'] ?></td>
                             <td class="text-end">$<?= number_format((float)$item['price'], 2) ?></td>
                             <td class="text-end">$<?= number_format((float)$item['price'] * (int)$item['qty'], 2) ?></td>
-                            <td style="min-width:260px;">
+                            <td class="rating-cell">
                                 <?php if ($isDelivered): ?>
                                     <?php if ($existingRating): ?>
                                         <div class="rating-stars small mb-1">
@@ -141,3 +135,4 @@ $isDelivered = strtolower((string)($order['status'] ?? '')) === 'delivered';
 </div>
 
 <?= $this->endSection() ?>
+

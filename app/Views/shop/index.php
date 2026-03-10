@@ -1,100 +1,8 @@
 <?= $this->extend('layouts/main') ?>
+<?= $this->section('pageStyles') ?>
+<link rel="stylesheet" href="<?= base_url('assets/css/shop.css') ?>">
+<?= $this->endSection() ?>
 <?= $this->section('content') ?>
-
-<style>
-    .market-strip {
-        background: linear-gradient(90deg, #1f3b4e, #24536a);
-        border: 1px solid color-mix(in oklab, var(--line) 70%, #1f3b4e);
-        color: #eaf6ff;
-        border-radius: 14px;
-        padding: 0.7rem 1rem;
-        margin-bottom: 1rem;
-        font-weight: 600;
-    }
-
-    .market-strip strong {
-        color: #ffd95a;
-    }
-
-    .filters-card {
-        position: sticky;
-        top: 84px;
-    }
-
-    .market-product-card {
-        border-radius: 16px;
-        overflow: hidden;
-    }
-
-    .market-product-card .card-body {
-        gap: 0.35rem;
-    }
-
-    .market-title {
-        min-height: 2.9rem;
-    }
-
-    .market-stars {
-        display: flex;
-        align-items: center;
-        gap: 0.25rem;
-        font-size: 0.84rem;
-        color: #f7b500;
-    }
-
-    .market-stars .star-dim {
-        color: color-mix(in oklab, #f7b500 38%, #8798a4);
-    }
-
-    .market-stars .rating-value {
-        color: var(--text);
-        margin-left: 0.2rem;
-        font-weight: 700;
-    }
-
-    .market-stars .rating-count {
-        color: var(--muted);
-        font-weight: 600;
-    }
-
-    .market-ship {
-        font-size: 0.82rem;
-        color: var(--muted);
-    }
-
-    .price-current {
-        font-size: 1.45rem;
-        font-weight: 800;
-        line-height: 1;
-    }
-
-    .price-row {
-        display: flex;
-        align-items: baseline;
-        gap: 0.45rem;
-        flex-wrap: wrap;
-    }
-
-    .btn-market {
-        border: 1px solid #d5ad2d;
-        background: linear-gradient(180deg, #ffe47a, #ffd24d);
-        color: #1b2430;
-        font-weight: 700;
-        border-radius: 999px;
-    }
-
-    .btn-market:hover {
-        background: linear-gradient(180deg, #ffe985, #ffd95e);
-        color: #141b24;
-    }
-
-    @media (max-width: 991.98px) {
-        .filters-card {
-            position: static;
-            top: 0;
-        }
-    }
-</style>
 
 <div class="market-strip">
     <strong>Today’s Deals:</strong> Discover curated picks, fast shipping products, and startup-price offers across all categories.
@@ -106,7 +14,8 @@
             <h5 class="fw-bold mb-1">Refine Results</h5>
             <small class="text-muted">Find products faster like a marketplace.</small>
 
-            <form method="get" action="<?= base_url('shop') ?>">
+            <form method="post" action="<?= base_url('shop/filter') ?>">
+                <?= csrf_field() ?>
                 <label class="form-label fw-semibold mt-3">Category</label>
                 <?php foreach ($categories as $cat): ?>
                     <div class="form-check">
@@ -201,3 +110,5 @@
 </div>
 
 <?= $this->endSection() ?>
+
+

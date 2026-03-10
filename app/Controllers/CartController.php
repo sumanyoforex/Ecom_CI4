@@ -35,7 +35,7 @@ class CartController extends BaseController
         $items = (new CartModel())->getCartItems($sid, $uid);
         $total = array_sum(array_column($items, 'subtotal'));
 
-        return view('shop/cart', ['items' => $items, 'total' => $total]);
+        return view('cart/index', ['items' => $items, 'total' => $total]);
     }
 
     public function add()
@@ -113,3 +113,5 @@ class CartController extends BaseController
         return redirect()->to('/cart')->with('success', 'Item removed.');
     }
 }
+
+

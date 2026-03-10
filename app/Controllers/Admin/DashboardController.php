@@ -27,9 +27,10 @@ class DashboardController extends BaseController
             ->orderBy('o.created_at', 'DESC')
             ->limit(5)->get()->getResultArray();
 
-        return view('admin/dashboard', [
+        return view('admin/dashboard/index', [
             'stats'        => $stats,
             'recentOrders' => $recentOrders,
         ]);
     }
 }
+

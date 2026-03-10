@@ -1,69 +1,8 @@
 <?= $this->extend('layouts/main') ?>
+<?= $this->section('pageStyles') ?>
+<link rel="stylesheet" href="<?= base_url('assets/css/home.css') ?>">
+<?= $this->endSection() ?>
 <?= $this->section('content') ?>
-
-<style>
-    .category-slider-shell {
-        overflow: hidden;
-    }
-
-    .category-slider {
-        display: flex;
-        gap: 1rem;
-        overflow-x: auto;
-        scroll-snap-type: x mandatory;
-        scroll-behavior: smooth;
-        padding-bottom: 0.25rem;
-        scrollbar-width: none;
-    }
-
-    .category-slider::-webkit-scrollbar {
-        display: none;
-    }
-
-    .category-slide {
-        flex: 0 0 calc((100% - 3rem) / 4);
-        min-width: 220px;
-        scroll-snap-align: start;
-        text-decoration: none;
-        color: inherit;
-    }
-
-    .category-nav {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .category-nav-btn {
-        border: 1px solid var(--line);
-        background: var(--panel);
-        color: var(--text);
-        width: 38px;
-        height: 38px;
-        border-radius: 999px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .category-nav-btn:hover {
-        background: color-mix(in oklab, var(--panel-soft) 72%, var(--panel));
-    }
-
-    @media (max-width: 991.98px) {
-        .category-slide {
-            flex: 0 0 calc((100% - 2rem) / 3);
-            min-width: 210px;
-        }
-    }
-
-    @media (max-width: 767.98px) {
-        .category-slide {
-            flex: 0 0 calc((100% - 1rem) / 2);
-            min-width: 170px;
-        }
-    }
-</style>
 
 <section class="panel hero-panel p-4 p-md-5 mb-4 position-relative overflow-hidden">
     <div class="row g-4 align-items-stretch align-items-lg-center">
@@ -85,7 +24,7 @@
             <div class="card hero-highlight-card p-3 border-0 w-100">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <h5 class="mb-0">Highlights</h5>
-                    <i class="fa-solid fa-bolt" style="color: var(--accent);"></i>
+                    <i class="fa-solid fa-bolt hero-highlight-icon"></i>
                 </div>
                 <ul class="list-unstyled mb-0">
                     <li class="py-2 border-bottom">Responsive storefront on desktop and mobile</li>
@@ -114,11 +53,11 @@
     <div class="category-slider-shell">
         <div class="category-slider" id="categorySlider">
             <?php foreach ($categories as $cat): ?>
-                <a href="<?= base_url('shop?category=' . $cat['id']) ?>" class="category-slide">
+                <a href="<?= base_url('shop/category/' . (int)$cat['id']) ?>" class="category-slide">
                     <div class="product-card h-100">
                         <img loading="lazy" decoding="async" src="<?= esc($cat['image_url']) ?>" class="card-img-top" alt="<?= esc($cat['name']) ?>">
                         <div class="card-body p-3 d-flex align-items-center justify-content-center text-center">
-                            <h6 class="mb-0 fw-bold" style="color: var(--text); min-height: auto;"><?= esc($cat['name']) ?></h6>
+                            <h6 class="mb-0 fw-bold category-title"><?= esc($cat['name']) ?></h6>
                         </div>
                     </div>
                 </a>
@@ -158,70 +97,10 @@
     </div>
 </section>
 
-<script>
-    (function () {
-        const slider = document.getElementById('categorySlider');
-        if (!slider) return;
-
-        const prevBtn = document.querySelector('[data-category-nav="prev"]');
-        const nextBtn = document.querySelector('[data-category-nav="next"]');
-
-        const getGap = function () {
-            return parseFloat(getComputedStyle(slider).gap || '16');
-        };
-
-        const getStep = function () {
-            const firstCard = slider.querySelector('.category-slide');
-            if (!firstCard) return slider.clientWidth * 0.8;
-            return firstCard.getBoundingClientRect().width + getGap();
-        };
-
-        const slide = function (direction) {
-            slider.scrollBy({ left: direction * getStep(), behavior: 'smooth' });
-        };
-
-        if (prevBtn) {
-            prevBtn.addEventListener('click', function () { slide(-1); });
-        }
-
-        if (nextBtn) {
-            nextBtn.addEventListener('click', function () { slide(1); });
-        }
-
-        let autoTimer = null;
-
-        const stopAuto = function () {
-            if (autoTimer) {
-                clearInterval(autoTimer);
-                autoTimer = null;
-            }
-        };
-
-        const startAuto = function () {
-            stopAuto();
-            if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                return;
-            }
-
-            autoTimer = setInterval(function () {
-                const atEnd = slider.scrollLeft + slider.clientWidth >= slider.scrollWidth - 4;
-                if (atEnd) {
-                    slider.scrollTo({ left: 0, behavior: 'smooth' });
-                } else {
-                    slide(1);
-                }
-            }, 2600);
-        };
-
-        slider.addEventListener('mouseenter', stopAuto);
-        slider.addEventListener('mouseleave', startAuto);
-        slider.addEventListener('touchstart', stopAuto, { passive: true });
-        slider.addEventListener('touchend', startAuto, { passive: true });
-        slider.addEventListener('focusin', stopAuto);
-        slider.addEventListener('focusout', startAuto);
-
-        startAuto();
-    })();
-</script>
-
 <?= $this->endSection() ?>
+
+
+
+
+
+

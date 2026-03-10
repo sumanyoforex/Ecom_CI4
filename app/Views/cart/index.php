@@ -1,4 +1,7 @@
 <?= $this->extend('layouts/main') ?>
+<?= $this->section('pageStyles') ?>
+<link rel="stylesheet" href="<?= base_url('assets/css/cart.css') ?>">
+<?= $this->endSection() ?>
 <?= $this->section('content') ?>
 
 <h2 class="mb-4">Your Cart</h2>
@@ -39,7 +42,7 @@
                                 <form method="post" action="<?= base_url('cart/update') ?>" class="d-inline-flex gap-1 align-items-center">
                                     <?= csrf_field() ?>
                                     <input type="hidden" name="cart_id" value="<?= (int)$item['id'] ?>">
-                                    <input type="number" name="qty" value="<?= (int)$item['qty'] ?>" min="1" max="<?= (int)$item['stock'] ?>" class="form-control form-control-sm" style="width:72px">
+                                    <input type="number" name="qty" value="<?= (int)$item['qty'] ?>" min="1" max="<?= (int)$item['stock'] ?>" class="form-control form-control-sm cart-qty-input">
                                     <button class="btn btn-sm btn-outline-secondary" type="submit">Update</button>
                                 </form>
                             </td>
@@ -74,4 +77,5 @@
 <?php endif; ?>
 
 <?= $this->endSection() ?>
+
 

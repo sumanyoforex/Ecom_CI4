@@ -28,7 +28,7 @@ class OrderController extends BaseController
             ->get()
             ->getResultArray();
 
-        return view('admin/orders/index', ['orders' => $orders]);
+        return view('admin/order/index', ['orders' => $orders]);
     }
 
     public function detail(int $id)
@@ -38,7 +38,7 @@ class OrderController extends BaseController
             return redirect()->to('/admin/orders')->with('error', 'Order not found.');
         }
 
-        return view('admin/orders/detail', ['order' => $order]);
+        return view('admin/order/detail', ['order' => $order]);
     }
 
     public function updateStatus(int $id)
@@ -133,3 +133,5 @@ class OrderController extends BaseController
         }
     }
 }
+
+

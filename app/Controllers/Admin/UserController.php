@@ -12,7 +12,7 @@ class UserController extends BaseController
 {
     public function index()
     {
-        return view('admin/users/index', [
+        return view('admin/user/index', [
             'users' => (new UserModel())->orderBy('created_at', 'DESC')->findAll(),
         ]);
     }
@@ -24,7 +24,7 @@ class UserController extends BaseController
             return redirect()->to('/admin/users')->with('error', 'User not found.');
         }
 
-        return view('admin/users/form', ['user' => $user]);
+        return view('admin/user/edit', ['user' => $user]);
     }
 
     public function update(int $id)
@@ -65,3 +65,6 @@ class UserController extends BaseController
         return redirect()->to('/admin/users')->with('success', 'User details updated.');
     }
 }
+
+
+

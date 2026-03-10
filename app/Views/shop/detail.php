@@ -1,4 +1,7 @@
 <?= $this->extend('layouts/main') ?>
+<?= $this->section('pageStyles') ?>
+<link rel="stylesheet" href="<?= base_url('assets/css/shop-detail.css') ?>">
+<?= $this->endSection() ?>
 <?= $this->section('content') ?>
 
 <?php
@@ -7,17 +10,6 @@ $reviews = $reviews ?? [];
 $avg = (float)($ratingStats['avg_rating'] ?? 0);
 $count = (int)($ratingStats['rating_count'] ?? 0);
 ?>
-
-<style>
-    .rating-stars i { color: #f7b500; }
-    .rating-stars .dim { color: #9fb2bc; }
-    .review-card {
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        padding: 0.9rem;
-        background: color-mix(in oklab, var(--panel) 92%, var(--surface));
-    }
-</style>
 
 <div class="row g-4">
     <div class="col-md-7">
@@ -53,7 +45,7 @@ $count = (int)($ratingStats['rating_count'] ?? 0);
             <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
             <div class="d-flex align-items-center gap-2 mb-3">
                 <label>Qty:</label>
-                <input type="number" name="qty" value="1" min="1" max="<?= $product['stock'] ?>" class="form-control" style="width:80px">
+                <input type="number" name="qty" value="1" min="1" max="<?= $product['stock'] ?>" class="form-control qty-input">
             </div>
             <button class="btn btn-primary btn-lg w-100">
                 <i class="fa fa-cart-plus me-2"></i>Add to Cart
@@ -101,3 +93,4 @@ $count = (int)($ratingStats['rating_count'] ?? 0);
 </section>
 
 <?= $this->endSection() ?>
+

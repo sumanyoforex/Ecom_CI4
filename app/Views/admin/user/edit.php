@@ -6,7 +6,7 @@
     <a href="<?= base_url('admin/users') ?>" class="btn btn-outline-secondary">Back</a>
 </div>
 
-<div class="card border-0 shadow-sm p-4" style="max-width:720px;">
+<div class="card border-0 shadow-sm p-4 admin-form-720">
     <form method="post" action="<?= base_url('admin/users/update/' . $user['id']) ?>">
         <?= csrf_field() ?>
 
@@ -41,3 +41,4 @@
 </div>
 
 <?= $this->endSection() ?>
+

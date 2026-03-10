@@ -7,7 +7,7 @@
     <a href="<?= base_url('admin/products') ?>" class="btn btn-outline-secondary">← Back</a>
 </div>
 
-<div class="card border-0 shadow-sm p-4" style="max-width:700px">
+<div class="card border-0 shadow-sm p-4 admin-form-700">
     <form method="post" action="<?= $isEdit ? base_url('admin/products/update/'.$product['id']) : base_url('admin/products/store') ?>">
         <?= csrf_field() ?>
 
@@ -52,7 +52,7 @@
             <label class="form-label">Image URL (from online source)</label>
             <input type="text" name="image_url" class="form-control" value="<?= esc($product['image_url'] ?? '') ?>" placeholder="https://picsum.photos/seed/name/600/400">
             <?php if (!empty($product['image_url'])): ?>
-                <img loading="lazy" decoding="async" src="<?= esc($product['image_url']) ?>" class="mt-2 rounded" style="max-height:100px">
+                <img loading="lazy" decoding="async" src="<?= esc($product['image_url']) ?>" class="mt-2 rounded admin-image-preview">
             <?php endif; ?>
         </div>
 
@@ -69,4 +69,5 @@
 </div>
 
 <?= $this->endSection() ?>
+
 

@@ -8,6 +8,9 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'HomeController::index');
 $routes->get('landing', 'HomeController::index');
 $routes->get('shop', 'ShopController::index');
+$routes->post('shop/filter', 'ShopController::applyFilters');
+$routes->get('shop/category/(:num)', 'ShopController::index/$1/-/newest/0/0');
+$routes->get('shop/filters/(:num)/(:segment)/(:segment)/(:segment)/(:segment)', 'ShopController::index/$1/$2/$3/$4/$5');
 $routes->get('shop/(:segment)', 'ShopController::detail/$1');
 $routes->get('health', 'SystemController::health');
 $routes->post('webhooks/payment', 'PaymentWebhookController::handle');
@@ -73,4 +76,3 @@ $routes->group('admin', ['filter' => 'admin'], function ($routes) {
     $routes->get('users/edit/(:num)', 'Admin\\UserController::edit/$1');
     $routes->post('users/update/(:num)', 'Admin\\UserController::update/$1');
 });
-

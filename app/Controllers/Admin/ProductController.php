@@ -23,7 +23,7 @@ class ProductController extends BaseController
     /** GET /admin/products */
     public function index()
     {
-        return view('admin/products/index', [
+        return view('admin/product/index', [
             'products' => $this->products->orderBy('created_at','DESC')->findAll(),
         ]);
     }
@@ -31,7 +31,7 @@ class ProductController extends BaseController
     /** GET /admin/products/create */
     public function create()
     {
-        return view('admin/products/form', [
+        return view('admin/product/create', [
             'categories' => $this->categories->allCategories(),
             'product'    => null,
         ]);
@@ -55,7 +55,7 @@ class ProductController extends BaseController
     /** GET /admin/products/edit/{id} */
     public function edit(int $id)
     {
-        return view('admin/products/form', [
+        return view('admin/product/edit', [
             'categories' => $this->categories->allCategories(),
             'product'    => $this->products->find($id),
         ]);
@@ -77,3 +77,5 @@ class ProductController extends BaseController
         return redirect()->to('/admin/products')->with('success', 'Product deleted.');
     }
 }
+
+

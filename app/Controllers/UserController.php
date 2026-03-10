@@ -15,7 +15,7 @@ class UserController extends BaseController
     {
         $uid = (int)session()->get('user_id');
         $orders = (new OrderModel())->getOrdersByUser($uid);
-        return view('shop/account', ['orders' => $orders]);
+        return view('user/account', ['orders' => $orders]);
     }
 
     public function orderDetail(int $id)
@@ -32,7 +32,7 @@ class UserController extends BaseController
             $ratingsByProduct[(int)$r['product_id']] = $r;
         }
 
-        return view('shop/order_detail', [
+        return view('user/orderDetail', [
             'order' => $order,
             'ratingsByProduct' => $ratingsByProduct,
         ]);
@@ -139,3 +139,5 @@ class UserController extends BaseController
         }
     }
 }
+
+

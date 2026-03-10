@@ -20,7 +20,7 @@ class CategoryController extends BaseController
     /** GET /admin/categories */
     public function index()
     {
-        return view('admin/categories/index', [
+        return view('admin/category/index', [
             'categories' => $this->categories->allCategories(),
         ]);
     }
@@ -28,7 +28,7 @@ class CategoryController extends BaseController
     /** GET /admin/categories/create */
     public function create()
     {
-        return view('admin/categories/form', ['category' => null]);
+        return view('admin/category/create', ['category' => null]);
     }
 
     /** POST /admin/categories/store */
@@ -43,7 +43,7 @@ class CategoryController extends BaseController
     /** GET /admin/categories/edit/{id} */
     public function edit(int $id)
     {
-        return view('admin/categories/form', ['category' => $this->categories->find($id)]);
+        return view('admin/category/edit', ['category' => $this->categories->find($id)]);
     }
 
     /** POST /admin/categories/update/{id} */
@@ -62,3 +62,5 @@ class CategoryController extends BaseController
         return redirect()->to('/admin/categories')->with('success', 'Category deleted.');
     }
 }
+
+

@@ -13,7 +13,7 @@ class AuthController extends BaseController
 {
     public function registerForm()
     {
-        return view('auth/register');
+        return view('auth/registerForm');
     }
 
     public function register()
@@ -25,7 +25,7 @@ class AuthController extends BaseController
         ];
 
         if (!$this->validate($rules)) {
-            return view('auth/register', ['errors' => $this->validator->getErrors()]);
+            return view('auth/registerForm', ['errors' => $this->validator->getErrors()]);
         }
 
         $model = new UserModel();
@@ -53,7 +53,7 @@ class AuthController extends BaseController
 
     public function loginForm()
     {
-        return view('auth/login');
+        return view('auth/loginForm');
     }
 
     public function login()
@@ -112,7 +112,7 @@ class AuthController extends BaseController
 
     public function forgotPasswordForm()
     {
-        return view('auth/forgot_password');
+        return view('auth/forgotPasswordForm');
     }
 
     public function sendPasswordReset()
@@ -173,7 +173,7 @@ class AuthController extends BaseController
             return redirect()->to('/forgot-password')->with('error', 'Reset link is invalid or expired.');
         }
 
-        return view('auth/reset_password', ['token' => $token]);
+        return view('auth/resetPasswordForm', ['token' => $token]);
     }
 
     public function resetPassword(string $token)
@@ -239,4 +239,6 @@ class AuthController extends BaseController
         ]);
     }
 }
+
+
 
