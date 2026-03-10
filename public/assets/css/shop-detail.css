@@ -1,0 +1,18 @@
+.rating-stars i {
+    color: #f7b500;
+}
+
+.rating-stars .dim {
+    color: #9fb2bc;
+}
+
+.review-card {
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 0.9rem;
+    background: color-mix(in oklab, var(--panel) 92%, var(--surface));
+}
+
+.qty-input {
+    width: 80px;
+}

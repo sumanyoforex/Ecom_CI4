@@ -43,7 +43,7 @@ class OrderModel extends Model
         }
 
         $order['items'] = $this->db->table('order_items oi')
-            ->select('oi.product_id, oi.qty, oi.price, p.name, p.image_url')
+            ->select('oi.product_id, oi.qty, oi.price, p.name, p.slug, p.image_url')
             ->join('products p', 'p.id = oi.product_id')
             ->where('oi.order_id', $orderId)
             ->get()
@@ -63,3 +63,4 @@ class OrderModel extends Model
         return 'ORD-' . date('Ymd') . '-' . strtoupper(bin2hex(random_bytes(3)));
     }
 }
+

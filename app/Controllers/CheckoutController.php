@@ -26,7 +26,7 @@ class CheckoutController extends BaseController
 
         $summary = $this->buildCheckoutSummary($items);
 
-        return view('shop/checkout', [
+        return view('checkout/index', [
             'items' => $items,
             'summary' => $summary,
             'appliedCouponCode' => session()->get('coupon_code'),
@@ -256,3 +256,4 @@ class CheckoutController extends BaseController
         ];
     }
 }
+

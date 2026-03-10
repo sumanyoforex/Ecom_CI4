@@ -28,11 +28,12 @@ class HomeController extends BaseController
             $cache->save($cacheKey, $cached, 300);
         }
 
-        return view('landing', [
+        return view('home/index', [
             'featured' => $cached['featured'],
             'categories' => $cached['categories'],
             'title' => 'ShopCI4 | Smart Shopping',
         ]);
     }
 }
+
 

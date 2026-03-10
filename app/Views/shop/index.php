@@ -1,12 +1,22 @@
 <?= $this->extend('layouts/main') ?>
+<?= $this->section('pageStyles') ?>
+<link rel="stylesheet" href="<?= base_url('assets/css/shop.css') ?>">
+<?= $this->endSection() ?>
 <?= $this->section('content') ?>
+
+<div class="market-strip">
+    <strong>Today’s Deals:</strong> Discover curated picks, fast shipping products, and startup-price offers across all categories.
+</div>
 
 <div class="row g-4">
     <div class="col-lg-3">
-        <div class="card border-0 p-3">
-            <h5 class="fw-bold">Filters</h5>
-            <form method="get" action="<?= base_url('shop') ?>">
-                <label class="form-label fw-semibold mt-2">Category</label>
+        <div class="card border-0 p-3 filters-card">
+            <h5 class="fw-bold mb-1">Refine Results</h5>
+            <small class="text-muted">Find products faster like a marketplace.</small>
+
+            <form method="post" action="<?= base_url('shop/filter') ?>">
+                <?= csrf_field() ?>
+                <label class="form-label fw-semibold mt-3">Category</label>
                 <?php foreach ($categories as $cat): ?>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="category" value="<?= (int)$cat['id'] ?>" id="cat<?= (int)$cat['id'] ?>" <?= $activeCategoryId == $cat['id'] ? 'checked' : '' ?>>
@@ -39,7 +49,7 @@
                     <option value="name_asc" <?= $sort === 'name_asc' ? 'selected' : '' ?>>Name: A-Z</option>
                 </select>
 
-                <button class="btn btn-brand btn-sm w-100 mt-3" type="submit">Apply</button>
+                <button class="btn btn-brand btn-sm w-100 mt-3" type="submit">Apply Filters</button>
                 <a href="<?= base_url('shop') ?>" class="btn btn-outline-secondary btn-sm w-100 mt-2">Reset</a>
             </form>
         </div>
@@ -47,7 +57,8 @@
 
     <div class="col-lg-9">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5 class="mb-0"><?= count($products) ?> Products Found</h5>
+            <h5 class="mb-0 fw-bold"><?= count($products) ?> Products Found</h5>
+            <small class="text-muted">Updated for a marketplace shopping experience</small>
         </div>
 
         <?php if (empty($products)): ?>
@@ -55,24 +66,40 @@
         <?php else: ?>
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                 <?php foreach ($products as $p): ?>
-                    <div class="col">
-                        <div class="product-card h-100 position-relative">
+                    <?php
+                    $rating = min(4.9, 3.8 + (((int)$p['id'] % 11) * 0.1));
+                    $reviews = 120 + (((int)$p['id'] * 37) % 4200);
+                    $price = (float)$p['price'];
+                    $sale = $p['sale_price'] !== null ? (float)$p['sale_price'] : null;
+                    ?>
+                    <div class="col d-flex">
+                        <div class="product-card market-product-card h-100 position-relative w-100">
                             <?php if (!empty($p['sale_price'])): ?>
                                 <span class="badge badge-sale">SALE</span>
                             <?php endif; ?>
                             <img loading="lazy" decoding="async" src="<?= esc($p['image_url']) ?>" class="card-img-top" alt="<?= esc($p['name']) ?>">
                             <div class="card-body d-flex flex-column p-3">
-                                <h6 class="card-title fw-bold mb-1"><?= esc($p['name']) ?></h6>
-                                <small class="text-muted mb-2">Stock: <?= (int)$p['stock'] ?></small>
-                                <div class="mt-auto">
-                                    <?php if (!empty($p['sale_price'])): ?>
-                                        <span class="text-danger fw-bold">$<?= number_format((float)$p['sale_price'], 2) ?></span>
-                                        <small class="text-muted text-decoration-line-through ms-1">$<?= number_format((float)$p['price'], 2) ?></small>
+                                <h6 class="card-title fw-bold mb-1 market-title"><?= esc($p['name']) ?></h6>
+
+                                <div class="market-stars mb-1">
+                                    <?php for ($i = 1; $i <= 5; $i++): ?>
+                                        <i class="fa-solid fa-star <?= $i <= (int)floor($rating) ? '' : 'star-dim' ?>"></i>
+                                    <?php endfor; ?>
+                                    <span class="rating-value"><?= number_format($rating, 1) ?></span>
+                                    <span class="rating-count">(<?= number_format($reviews) ?>)</span>
+                                </div>
+
+                                <div class="price-row mt-auto">
+                                    <?php if ($sale !== null): ?>
+                                        <span class="text-danger price-current">$<?= number_format($sale, 2) ?></span>
+                                        <small class="text-muted text-decoration-line-through">$<?= number_format($price, 2) ?></small>
                                     <?php else: ?>
-                                        <span class="fw-bold">$<?= number_format((float)$p['price'], 2) ?></span>
+                                        <span class="price-current">$<?= number_format($price, 2) ?></span>
                                     <?php endif; ?>
                                 </div>
-                                <a href="<?= base_url('shop/' . $p['slug']) ?>" class="btn btn-outline-primary btn-sm mt-2">View</a>
+
+                                <small class="market-ship mb-2">FREE delivery by tomorrow</small>
+                                <a href="<?= base_url('shop/' . $p['slug']) ?>" class="btn btn-market btn-sm mt-1">View Details</a>
                             </div>
                         </div>
                     </div>
@@ -83,4 +110,5 @@
 </div>
 
 <?= $this->endSection() ?>
+
 

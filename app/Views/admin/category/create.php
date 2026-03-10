@@ -7,7 +7,7 @@
     <a href="<?= base_url('admin/categories') ?>" class="btn btn-outline-secondary">← Back</a>
 </div>
 
-<div class="card border-0 shadow-sm p-4" style="max-width:500px">
+<div class="card border-0 shadow-sm p-4 admin-form-500">
     <form method="post" action="<?= $isEdit ? base_url('admin/categories/update/'.$category['id']) : base_url('admin/categories/store') ?>">
         <?= csrf_field() ?>
         <div class="mb-3">
@@ -23,3 +23,4 @@
 </div>
 
 <?= $this->endSection() ?>
+

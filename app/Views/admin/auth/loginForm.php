@@ -4,11 +4,7 @@
     <meta charset="UTF-8">
     <title>Admin Login | ShopCI4</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body { background: #1a1d23; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-        .login-card { background: #fff; border-radius: 1rem; padding: 2.5rem; width: 100%; max-width: 400px; box-shadow: 0 10px 40px rgba(0,0,0,.4); }
-        .brand { color: #0d6efd; font-size: 1.8rem; font-weight: 800; }
-    </style>
+    <link rel="stylesheet" href="<?= base_url('assets/css/admin-auth.css') ?>">
 </head>
 <body>
 <div class="login-card">
@@ -36,3 +32,4 @@
 </div>
 </body>
 </html>
+

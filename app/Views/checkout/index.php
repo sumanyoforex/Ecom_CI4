@@ -1,4 +1,7 @@
 <?= $this->extend('layouts/main') ?>
+<?= $this->section('pageStyles') ?>
+<link rel="stylesheet" href="<?= base_url('assets/css/checkout.css') ?>">
+<?= $this->endSection() ?>
 <?= $this->section('content') ?>
 
 <div class="row g-4">
@@ -29,7 +32,7 @@
                 </table>
             </div>
 
-            <div class="card border-0 p-3" style="background: var(--surface);">
+            <div class="card border-0 p-3 coupon-panel">
                 <h6 class="mb-2">Coupon</h6>
                 <form method="post" action="<?= base_url('checkout/apply-coupon') ?>" class="d-flex gap-2 mb-2">
                     <?= csrf_field() ?>
@@ -83,3 +86,4 @@
 </div>
 
 <?= $this->endSection() ?>
+

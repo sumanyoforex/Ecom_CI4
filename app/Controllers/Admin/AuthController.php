@@ -15,7 +15,7 @@ class AuthController extends BaseController
             return redirect()->to('/admin');
         }
 
-        return view('admin/login');
+        return view('admin/auth/loginForm');
     }
 
     public function login()
@@ -48,4 +48,5 @@ class AuthController extends BaseController
         return redirect()->to('/')->with('success', 'Logged out of admin panel.');
     }
 }
+
 

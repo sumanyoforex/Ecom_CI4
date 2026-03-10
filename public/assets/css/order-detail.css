@@ -1,0 +1,16 @@
+.rating-stars i {
+    color: #f7b500;
+}
+
+.rating-stars .dim {
+    color: #9fb2bc;
+}
+
+.rating-form select,
+.rating-form textarea {
+    font-size: 0.85rem;
+}
+
+.rating-cell {
+    min-width: 260px;
+}
